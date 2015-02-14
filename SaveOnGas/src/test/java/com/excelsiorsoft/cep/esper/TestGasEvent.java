@@ -18,26 +18,28 @@ import com.excelsiorsoft.cep.esper.model.Store;
 public class TestGasEvent {
 	private Configuration cepConfig = null;
 	private EPServiceProvider epService = null;
-	private GasEvent[] gasEvents = new GasEvent[20];
+	private GasEvent[] gasEvents = new GasEvent[5];
 
 	@Before
 	public void initialize() throws Exception {
 		cepConfig = new Configuration();
 		cepConfig.addEventType("GasEvent", GasEvent.class.getName());
-		epService = EPServiceProviderManager.getProvider("myCEPEngine",
-				cepConfig);
+		epService = EPServiceProviderManager.getProvider("myCEPEngine",	cepConfig);
 		Store store1 = new Store();
 		store1.setStoreName("Exxon");
 		store1.setZipCode("11208");
+		
 		Store store2 = new Store();
 		store2.setStoreName("Shell");
 		store2.setZipCode("11209");
+		
 		Store store3 = new Store();
 		store3.setStoreName("Chevron");
 		store3.setZipCode("11210");
+		
 		Store store4 = new Store();
 		store4.setStoreName("Citgo");
-		store4.setZipCode("11211");
+		store4.setZipCode("11209");
 		GasEvent gasEvent1 = new GasEvent();
 		;
 		gasEvent1.setPrice(2.80);
@@ -73,16 +75,18 @@ public class TestGasEvent {
 	@Test
 	public void findCheapGasLocally() {
 		try {
-			String expression = "select * from GasEvent(grade='Regular') having price < 2.80 and store.zipCode in ('11209')";
-			EPStatement statement = epService.getEPAdministrator().createEPL(
-					expression);
-			GasEventListener listener = new GasEventListener();
-			statement.addListener(listener);
-			for (int i = 0; i < 6; i++) {
-				Random random = new Random();
-				int eventIndex = random.nextInt(5);
-				epService.getEPRuntime().sendEvent(gasEvents[eventIndex]);
-				Thread.sleep(3000);
+			String expression = "select * from GasEvent(grade='Regular') having price < 2.60 and store.zipCode in ('11209')";
+			EPStatement statement = epService.getEPAdministrator().createEPL(expression);
+			
+			statement.addListener(new GasEventListener());
+			for (int i = 0; i < gasEvents.length; i++) {
+				//Random random = new Random();
+				//int eventIndex = random.nextInt(5);
+				/*System.out.println("About to send event #: "+eventIndex);
+				epService.getEPRuntime().sendEvent(gasEvents[eventIndex]);*/
+				System.out.println("About to send event #: "+i);
+				epService.getEPRuntime().sendEvent(gasEvents[i]);
+				Thread.sleep(1000);
 			}
 		} catch (Exception e) {
 			System.out.println(e);
