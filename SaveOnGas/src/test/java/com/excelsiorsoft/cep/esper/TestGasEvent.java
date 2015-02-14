@@ -1,9 +1,7 @@
 package com.excelsiorsoft.cep.esper;
 
-import java.util.Random;
-
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.espertech.esper.client.Configuration;
@@ -16,15 +14,24 @@ import com.excelsiorsoft.cep.esper.model.Store;
 
 
 public class TestGasEvent {
-	private Configuration cepConfig = null;
-	private EPServiceProvider epService = null;
-	private GasEvent[] gasEvents = new GasEvent[5];
+	
+	private static final int EVENT_BATCH_SIZE=5;
+	private static  Configuration cepConfig = null;
+	private static  EPServiceProvider epService = null;
+	private static GasEvent[] gasEvents = new GasEvent[EVENT_BATCH_SIZE];
 
-	@Before
-	public void initialize() throws Exception {
+	@BeforeClass
+	public static void initialize() throws Exception {
+		
 		cepConfig = new Configuration();
 		cepConfig.addEventType("GasEvent", GasEvent.class.getName());
 		epService = EPServiceProviderManager.getProvider("myCEPEngine",	cepConfig);
+		
+		buildEventsBatch();
+	}
+
+	private static void buildEventsBatch() {
+		
 		Store store1 = new Store();
 		store1.setStoreName("Exxon");
 		store1.setZipCode("11208");
@@ -75,17 +82,17 @@ public class TestGasEvent {
 	@Test
 	public void findCheapGasLocally() {
 		try {
-			String expression = "select * from GasEvent(grade='Regular') having price < 2.60 and store.zipCode in ('11209')";
-			EPStatement statement = epService.getEPAdministrator().createEPL(expression);
+			
+			final String expression = "select * from GasEvent(grade='Regular') having price < 2.60 and store.zipCode in ('11209')";
+			final EPStatement statement = epService.getEPAdministrator().createEPL(expression);
 			
 			statement.addListener(new GasEventListener());
+			
 			for (int i = 0; i < gasEvents.length; i++) {
-				//Random random = new Random();
-				//int eventIndex = random.nextInt(5);
-				/*System.out.println("About to send event #: "+eventIndex);
-				epService.getEPRuntime().sendEvent(gasEvents[eventIndex]);*/
+
 				System.out.println("About to send event #: "+i);
 				epService.getEPRuntime().sendEvent(gasEvents[i]);
+				
 				Thread.sleep(1000);
 			}
 		} catch (Exception e) {
@@ -93,8 +100,8 @@ public class TestGasEvent {
 		}
 	}
 
-	@After
-	public void cleanup() {
+	@AfterClass
+	public static void cleanup() {
 		cepConfig = null;
 		epService = null;
 	}
