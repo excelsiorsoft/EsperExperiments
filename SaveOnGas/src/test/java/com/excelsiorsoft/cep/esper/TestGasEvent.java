@@ -90,7 +90,7 @@ public class TestGasEvent {
 			
 			for (int i = 0; i < gasEvents.length; i++) {
 
-				System.out.println("About to send event #: "+i);
+				System.out.println("EventSender --> About to send event #: "+i);
 				epService.getEPRuntime().sendEvent(gasEvents[i]);
 				
 				Thread.sleep(1000);
