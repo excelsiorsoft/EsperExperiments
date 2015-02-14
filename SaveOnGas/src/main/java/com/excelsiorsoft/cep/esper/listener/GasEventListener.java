@@ -12,7 +12,7 @@ public class GasEventListener implements UpdateListener {
 
 		GasEvent event = (GasEvent) newEvents[0].getUnderlying();
 		
-		System.out.println("Least expensive local gas seems to be at: ");
+		System.out.println("\n InListener: Least expensive local gas seems to be at: ");
 		
 		System.out.println("Store Name: " + event.getStore().getStoreName());
 		System.out.println("Store Zip: " + event.getStore().getZipCode());
