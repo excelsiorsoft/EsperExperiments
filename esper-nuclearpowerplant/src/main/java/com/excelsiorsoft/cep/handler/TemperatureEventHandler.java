@@ -68,7 +68,7 @@ public class TemperatureEventHandler implements InitializingBean{
     private void createCriticalTemperatureCheckExpression() {
         
         LOG.debug("create Critical Temperature Check Expression");
-        criticalEventStatement = epService.getEPAdministrator().createEPL(criticalEventSubscriber.getStatement());
+        criticalEventStatement = epService.getEPAdministrator().createEPL(criticalEventSubscriber.getQuery());
         criticalEventStatement.setSubscriber(criticalEventSubscriber);
     }
 
@@ -79,7 +79,7 @@ public class TemperatureEventHandler implements InitializingBean{
     private void createWarningTemperatureCheckExpression() {
 
         LOG.debug("create Warning Temperature Check Expression");
-        warningEventStatement = epService.getEPAdministrator().createEPL(warningEventSubscriber.getStatement());
+        warningEventStatement = epService.getEPAdministrator().createEPL(warningEventSubscriber.getQuery());
         warningEventStatement.setSubscriber(warningEventSubscriber);
     }
 
@@ -89,7 +89,7 @@ public class TemperatureEventHandler implements InitializingBean{
     private void createTemperatureMonitorExpression() {
 
         LOG.debug("create Timed Average Monitor");
-        monitorEventStatement = epService.getEPAdministrator().createEPL(monitorEventSubscriber.getStatement());
+        monitorEventStatement = epService.getEPAdministrator().createEPL(monitorEventSubscriber.getQuery());
         monitorEventStatement.setSubscriber(monitorEventSubscriber);
     }
 

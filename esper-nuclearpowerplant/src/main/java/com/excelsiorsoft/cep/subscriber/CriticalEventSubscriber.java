@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.excelsiorsoft.cep.event.TemperatureEvent;
 
 /**
- * Wraps Esper Statement and Listener. No dependency on Esper libraries.
+ * Wraps Esper Statement Query and Listener. No dependency on Esper libraries.
  */
 @Component
 public class CriticalEventSubscriber implements StatementSubscriber {
@@ -29,7 +29,7 @@ public class CriticalEventSubscriber implements StatementSubscriber {
     /**
      * {@inheritDoc}
      */
-    public String getStatement() {
+    public String getQuery() {
         
         // Example using 'Match Recognise' syntax.
         String crtiticalEventExpression = "select * from TemperatureEvent "

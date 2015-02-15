@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * Wraps Esper Statement and Listener. No dependency on Esper libraries.
+ *  Wraps Esper Statement Query and Listener. No dependency on Esper libraries.
  */
 @Component
 public class MonitorEventSubscriber implements StatementSubscriber {
@@ -18,7 +18,7 @@ public class MonitorEventSubscriber implements StatementSubscriber {
     /**
      * {@inheritDoc}
      */
-    public String getStatement() {
+    public String getQuery() {
 
         // Example of simple EPL with a Time Window
         return "select avg(temperature) as avg_val from TemperatureEvent.win:time_batch(5 sec)";
