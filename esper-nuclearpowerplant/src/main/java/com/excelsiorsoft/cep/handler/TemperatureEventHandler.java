@@ -20,7 +20,7 @@ import com.excelsiorsoft.cep.subscriber.StatementSubscriber;
  * it has attached the 3 queries.
  */
 @Component
-@Scope(value = "singleton")
+//@Scope(value = "singleton")
 public class TemperatureEventHandler implements InitializingBean{
 
     /** Logger */
@@ -49,7 +49,8 @@ public class TemperatureEventHandler implements InitializingBean{
      */
     public void initService() {
 
-        LOG.debug("Initializing Service ...");
+        LOG.debug("Initializing TemperatureEventHandler ...\n");
+        
         Configuration config = new Configuration();
         config.addEventTypeAutoName("com.excelsiorsoft.cep.event");
         epService = EPServiceProviderManager.getDefaultProvider(config);
@@ -57,6 +58,8 @@ public class TemperatureEventHandler implements InitializingBean{
         createCriticalTemperatureCheckExpression();
         createWarningTemperatureCheckExpression();
         createTemperatureMonitorExpression();
+        
+        LOG.debug(this +" has successfully initialized .\n");
 
     }
 
@@ -67,9 +70,12 @@ public class TemperatureEventHandler implements InitializingBean{
      */
     private void createCriticalTemperatureCheckExpression() {
         
-        LOG.debug("create Critical Temperature Check Expression");
-        criticalEventStatement = epService.getEPAdministrator().createEPL(criticalEventSubscriber.getQuery());
+    	LOG.debug("creating 'Critical Temperature Check Expression'");
+    	criticalEventStatement = epService.getEPAdministrator().createEPL(criticalEventSubscriber.getQuery());
+    	
+    	LOG.debug("associating subscriber "+criticalEventSubscriber+" with statement "+criticalEventStatement+"\n");
         criticalEventStatement.setSubscriber(criticalEventSubscriber);
+        
     }
 
     /**
@@ -78,8 +84,10 @@ public class TemperatureEventHandler implements InitializingBean{
      */
     private void createWarningTemperatureCheckExpression() {
 
-        LOG.debug("create Warning Temperature Check Expression");
+        LOG.debug("creating 'Warning Temperature Check Expression'");
         warningEventStatement = epService.getEPAdministrator().createEPL(warningEventSubscriber.getQuery());
+        
+        LOG.debug("associating subscriber "+warningEventSubscriber+" with statement "+warningEventStatement+"\n");
         warningEventStatement.setSubscriber(warningEventSubscriber);
     }
 
@@ -88,8 +96,10 @@ public class TemperatureEventHandler implements InitializingBean{
      */
     private void createTemperatureMonitorExpression() {
 
-        LOG.debug("create Timed Average Monitor");
+        LOG.debug("creating 'Timed Average Monitor'");
         monitorEventStatement = epService.getEPAdministrator().createEPL(monitorEventSubscriber.getQuery());
+        
+        LOG.debug("associating subscriber "+monitorEventSubscriber+" with statement "+monitorEventStatement+"\n");
         monitorEventStatement.setSubscriber(monitorEventSubscriber);
     }
 
@@ -106,7 +116,7 @@ public class TemperatureEventHandler implements InitializingBean{
     @Override
     public void afterPropertiesSet() {
         
-        LOG.debug("Configuring..");
+        LOG.debug("Subscribers are initialized. Configuring TemperatureEventHandler...\n");
         initService();
     }
 }

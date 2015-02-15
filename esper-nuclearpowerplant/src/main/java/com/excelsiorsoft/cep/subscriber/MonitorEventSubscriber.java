@@ -6,11 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.excelsiorsoft.cep.subscriber.StatementSubscriber.AbstractStatementSubscriber;
+
 /**
  *  Wraps Esper Statement Query and Listener. No dependency on Esper libraries.
  */
 @Component
-public class MonitorEventSubscriber implements StatementSubscriber {
+public class MonitorEventSubscriber extends AbstractStatementSubscriber/*implements StatementSubscriber*/ {
 
     /** Logger */
     private static Logger LOG = LoggerFactory.getLogger(MonitorEventSubscriber.class);
@@ -39,4 +41,9 @@ public class MonitorEventSubscriber implements StatementSubscriber {
 
         LOG.debug(sb.toString());
     }
+    
+	@Override
+	public String toString() {
+		return this.getClass()+String.valueOf(this.hashCode())+" [getQuery()=" + getQuery() + "]";
+	}
 }

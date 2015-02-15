@@ -7,12 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.excelsiorsoft.cep.event.TemperatureEvent;
+import com.excelsiorsoft.cep.subscriber.StatementSubscriber.AbstractStatementSubscriber;
 
 /**
  * Wraps Esper Statement Query and Listener. No dependency on Esper libraries.
  */
 @Component
-public class CriticalEventSubscriber implements StatementSubscriber {
+public class CriticalEventSubscriber extends AbstractStatementSubscriber/*implements StatementSubscriber*/ {
 
     /** Logger */
     private static Logger LOG = LoggerFactory.getLogger(CriticalEventSubscriber.class);
@@ -62,11 +63,13 @@ public class CriticalEventSubscriber implements StatementSubscriber {
         StringBuilder sb = new StringBuilder();
         sb.append("***************************************");
         sb.append("\n* [ALERT] : CRITICAL EVENT DETECTED! ");
-        sb.append("\n* " + temp1 + " > " + temp2 + " > " + temp3 + " > " + temp4);
+        sb.append("\n* " + temp1 + " => " + temp2 + " => " + temp3 + " => " + temp4);
         sb.append("\n***************************************");
 
         LOG.debug(sb.toString());
     }
+
+
 
     
 }

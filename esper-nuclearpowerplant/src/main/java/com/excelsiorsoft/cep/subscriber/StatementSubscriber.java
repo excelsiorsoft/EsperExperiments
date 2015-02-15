@@ -6,10 +6,18 @@ package com.excelsiorsoft.cep.subscriber;
  */
 public interface StatementSubscriber {
 
-    /**
+    public abstract class AbstractStatementSubscriber implements StatementSubscriber {
+    	
+    	@Override
+    	public String toString() {
+    		return getClass().getName() + "@" + Integer.toHexString(hashCode())+" [getQuery()=" + getQuery() + "]";
+    	}
+	}
+
+	/**
      * Get the EPL Query the Subscriber will listen to.
      * @return EPL Query
      */
-    public String getQuery();
+    String getQuery();
 
 }
