@@ -77,6 +77,9 @@ public class AnotherSampleApp {
 	@Test
 	public void testApp() {
 
+		final double THREASHOLD = 5.0;
+		final int LOOKBACK_PERIOD = 3;
+		
 		SimpleLayout layout = new SimpleLayout();
 		ConsoleAppender appender = new ConsoleAppender(new SimpleLayout());
 		Logger.getRootLogger().addAppender(appender);
@@ -91,8 +94,8 @@ public class AnotherSampleApp {
 
 		EPAdministrator cepAdm = cep.getEPAdministrator();
 		EPStatement cepStatement = cepAdm.createEPL("select sum(price), avg(price), * from "
-				+ "StockTick(symbol='AAPL').win:length(3) "
-				+ "having avg(price) > 5.0");
+				+ "StockTick(symbol='AAPL').win:length("+LOOKBACK_PERIOD+") "
+				+ "having avg(price) > "+THREASHOLD);
 
 		cepStatement.addListener(new CEPListener());
 
